@@ -1,0 +1,55 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2025-05-30T08:14:09Z"
+  labels:
+    app.kubernetes.io/component: rabbitmq
+    app.kubernetes.io/name: iot-rabbitmq
+    app.kubernetes.io/part-of: rabbitmq
+  name: iot-rabbitmq-np # <- change name
+  namespace: iot-rabbit
+  ownerReferences:
+    - apiVersion: rabbitmq.com/v1beta1
+      blockOwnerDeletion: true
+      controller: true
+      kind: RabbitmqCluster
+      name: iot-rabbitmq
+      uid: 09232c37-0efc-43eb-875e-7c2469699249
+spec:
+  clusterIP: 10.152.183.191
+  clusterIPs:
+    - 10.152.183.191
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - appProtocol: amqp
+      name: amqp
+      port: 5672
+      protocol: TCP
+      targetPort: 5672
+      nodePort: 31572 # <- add here
+    - appProtocol: http
+      name: management
+      port: 15672
+      protocol: TCP
+      targetPort: 15672
+      nodePort: 31672 # <- add here
+    - appProtocol: mqtt
+      name: mqtt
+      port: 1883
+      protocol: TCP
+      targetPort: 1883
+      nodePort: 30883 # <- add here
+    - appProtocol: prometheus.io/metrics
+      name: prometheus
+      port: 15692
+      protocol: TCP
+      targetPort: 15692
+      nodePort: 31692 # <- add here
+  selector:
+    app.kubernetes.io/name: iot-rabbitmq
+  sessionAffinity: None
+  #  type: ClusterIP # Change here
+  type: NodePort # <- add here
