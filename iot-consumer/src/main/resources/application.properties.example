@@ -1,0 +1,8 @@
+spring.application.name=iot-consumer
+
+encoded.username=YOUR_ENCODED_USERNAME_FOR_RABBITMQ
+encoded.password=YOUR_ENCODED_PASSWORD_FOR_RABBITMQ
+
+neo4j.uri=bolt://<YOUR_IP_FOR_NEO4J>
+neo4j.user=YOUR_USERNAME_FOR_NEO4J
+neo4j.password=YOUR_PASSWORD_FOR_NEO4J

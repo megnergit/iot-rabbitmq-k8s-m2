@@ -9,6 +9,7 @@ RABBIT_MQ_TEST
 *.bak
 *.zip
 *.jar
+.env
 logs/
 tmp/
 
@@ -36,3 +37,12 @@ tmp/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+# Ignore secret configs
+**/application.properties
+
+# Ignore build outputs
+**/target/
+
+# Ignore macOS files
+.DS_Store

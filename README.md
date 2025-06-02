@@ -33,11 +33,11 @@ We will start from the place we ended in the last repository, which means,
 - neo4j is already running as a docker container on Raspberry Pi.
 
 
-0. Stop Kafka experiment.
+0. Stop Kafka experiment
 1. Deploy RabbitMQ Cluster Operator on kubernetes
-2. Create a RabbitMQ cluster. 
-3. Change ClusterIP to NodePort
-5. Write IoT device simulator in Java
+2. Create a RabbitMQ cluster 
+3. Add NodePort to access from local
+4. Write IoT device simulator in Java
 
 For this entire experiments ChatGPT helped me a lot. 
 ---
@@ -209,7 +209,7 @@ iot-rabbitmq-server-0   1/1     Running           0          82s
 
 Great.
 
-### 3. Change ClusterIP to NodePort
+### 3. Add NodePort to access from local
 By default management plugin (= Web UI) is enabled. One can
 access the web UI via port 15672. Connect the port of the VM
 to local (=your laptop) executing the following on the VM, 
@@ -332,7 +332,75 @@ $ k get secrets iot-rabbitmq-default-user -o yaml
 Great. 
 
 ---
+### 4. Write IoT device simulator in Java
 
+We will do two things here. 
+
+- Add paho dependency to pom.xml
+- Write IotSimulatorApplication.java
+
+A quick fix to directory names. 
+As package names like com.example.iot_simulator is not best practice, 
+we will remove the underscore. 
+
+```sh
+com.example.iot_simulator  -> com.example.iotsimulator 
+```
+
+We will rename the directories accordingly. 
+
+We are going to work at iot-simulator below. 
+
+```sh
+$ tree . -L 2
+.
+├── images
+│   ├── port-forwarding-1.png
+│   ├── rabbit-loggedin-1.png
+│   └── rabbit-ui-1.png
+├── iotconsumer
+│   ├── HELP.md
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   └── src
+├── iotsimulator
+│   ├── HELP.md
+│   ├── mvnw
+│   ├── mvnw.cmd
+│   ├── pom.xml
+│   └── src
+├── k8s
+│   ├── iot-rabbitmq-svc-nodeport.yaml
+│   └── rabbitmq-cluster.yaml
+├── RABBIT_MQ_TEST
+└── README.md
+
+```
+
+
+We will add the following to pom.xml
+
+```sh
+<dependencies>
+  <!-- MQTT client -->
+  <dependency>
+    <groupId>org.eclipse.paho</groupId>
+    <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+    <version>1.2.5</version>
+  </dependency>
+</dependencies>
+```
+
+Then write 
+
+<!--
+0. Stop Kafka experiment
+1. Deploy RabbitMQ Cluster Operator on kubernetes
+2. Create a RabbitMQ cluster 
+3. Add NodePort to access from local
+4. Write IoT device simulator in Java
+-->
 
 ---
 ![sender to neo4j](./images/neo4j-1.gif)
